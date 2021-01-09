@@ -35,7 +35,7 @@ section {
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 
 .intro h1 {
@@ -52,6 +52,7 @@ section {
   font-size: 20px;
   background: rgb(45, 117, 96);
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .match {
@@ -59,6 +60,7 @@ section {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  transition: opacity 0.5s ease 0.5s;
 }
 
 .winner {
@@ -76,4 +78,14 @@ section {
 
 .player-hand {
   transform: rotateY(180deg);
+}
+
+div.fadeOut {
+  opacity: 0;
+  pointer-events: none;
+}
+
+div.fadeIn {
+  opacity: 1;
+  pointer-events: none;
 }
