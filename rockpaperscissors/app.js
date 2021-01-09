@@ -27,12 +27,45 @@ const game = () => {
             option.addEventListener('click', function() {
                 const computerNumber = Math.floor(Math.random() * 3);
                 const computerChoice = computerOptions[computerNumber];
-                console.log(computerChoice);
+
+                
             });
         });
+    };
 
-
-
+    const compareHands = (playerChoice, computerChoice) => {
+        const winner = document.querySelector('.winner');
+        if(playerChoice === computerChoice){
+            winner.textContent = 'It is a tie';
+            return;
+        }
+        if(playerChoice === 'rock'){
+            if(computerChoice === 'scissors'){
+                winner.textContent = 'Player Wins';
+                return;
+            }else{
+                winner.textContent = 'Computer Wins';
+                return;
+            }
+        }
+        if(playerChoice === 'scissors'){
+            if(computerChoice === 'paper'){
+                winner.textContent = 'Player Wins';
+                return;
+            }else{
+                winner.textContent = 'Computer Wins';
+                return;
+            }
+        }
+        if(playerChoice === 'paper'){
+            if(computerChoice === 'rock'){
+                winner.textContent = 'Player Wins';
+                return;
+            }else{
+                winner.textContent = 'Computer Wins';
+                return;
+            }
+        }
     }
 
     startGame();
