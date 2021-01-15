@@ -1,0 +1,30 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.score {
+  justify-content: space-around;
+  align-items: center;
+  display: flex;
+}
+
+.score p {
+  text-align: center;
+  padding: 10px;
+}
+
+.intro {
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+  justify-content: space-around;
+}
+
+.hands,
+.options {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
