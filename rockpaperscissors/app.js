@@ -1,3 +1,5 @@
+
+
 let pScore = 0;
 let cScore = 0;
 
@@ -24,21 +26,22 @@ const playMatch = () => {
     });
 
     const compareHands = (playerChoice, computerChoice) => {
-        const winner = document.querySelector('.intro h1');
+        const winner = document.querySelector('.winner');
+
 
         if(playerChoice === computerChoice){
-            winner.textContent = 'It is a tie.';
+            winner.textContent = 'It is a tie';
             return;
         }
 
         if(playerChoice === 'rock'){
             if(computerChoice === 'scissors'){
-                winner.textContent = 'Player wins.';
+                winner.textContent = 'Player wins';
                 pScore++;
                 updateScore();
                 return;
             } else {
-                winner.textContent = 'Computer wins.';
+                winner.textContent = 'Computer wins';
                 cScore++;
                 updateScore();
                 return;
@@ -46,12 +49,12 @@ const playMatch = () => {
         }
         if(playerChoice === 'scissors'){
             if(computerChoice === 'paper'){
-                winner.textContent = 'Player wins.';
+                winner.textContent = 'Player wins';
                 pScore++;
                 updateScore();
                 return;
             } else {
-                winner.textContent = 'Computer wins.';
+                winner.textContent = 'Computer wins';
                 cScore++;
                 updateScore();
                 return;
@@ -59,12 +62,12 @@ const playMatch = () => {
         }
         if(playerChoice === 'paper'){
             if(computerChoice === 'rock'){
-                winner.textContent = 'Player wins.';
+                winner.textContent = 'Player wins';
                 pScore++;
                 updateScore();
                 return;
             } else {
-                winner.textContent = 'Computer wins.';
+                winner.textContent = 'Computer wins';
                 cScore++;
                 updateScore();
                 return;
@@ -72,6 +75,17 @@ const playMatch = () => {
         }
     }
 
+}
+
+const startGame = () => {
+    const playBtn = document.querySelector('.intro button');
+    const match = document.querySelector('.match');
+    const introScreen = document.querySelector('.intro')
+
+    playBtn.addEventListener('click', () => {
+        introScreen.classList.add('fadeOut');
+        match.classList.remove('fadeOut');
+    })
 }
 
 const updateScore = () => {
@@ -82,3 +96,4 @@ const updateScore = () => {
 }
 
 playMatch();
+startGame();
