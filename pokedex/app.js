@@ -53,6 +53,30 @@ const fetchPokeList = url => {
     })
 }
 
+const fetchPokeData = id => {
+    fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+    .then(res => res.json())
+    .then(data => {
+        resetScreen();
+        pokeName.innerText = data.name;
+        pokeId.innerText = '#' + data.id.toString().padStart(3, '0');
+        pokeFrontImage.src = data.sprites.front_default;
+        pokeBackImage.src = data.sprites.back_default;
+        if(!data.types[1]){
+            pokeTypeOne.innerText = capitalize(data.types[0].type.name);
+            pokeTypeTwo.innerText = '';
+            pokeTypeTwo.classList.add('hide');
+        }else{
+            pokeTypeTwo.classList.remove('hide');
+            pokeTypeOne.innerText = capitalize(data.types[0].type.name);
+            pokeTypeTwo.innerText = capitalize(data.types[1].type.name);
+        }
+        mainScreen.classList.add(`${data.types[0].type.name}`)
+        pokeWeight.innerText = data.weight;
+        pokeHeight.innerText = data.height;
+    });
+}
+
 const handleNextButtonClick = () => {
     if(nextUrl) {
         fetchPokeList(nextUrl);
@@ -65,29 +89,21 @@ const handlePrevButtonClick = () => {
     }
 }
 
-fetch('https://pokeapi.co/api/v2/pokemon/50')
-    .then(res => res.json())
-    .then(data => {
-        console.log(data);
-        resetScreen();
-        pokeName.innerText = data.name;
-        pokeId.innerText = '#' + data.id.toString().padStart(3, '0');
-        pokeFrontImage.src = data.sprites.front_default;
-        pokeBackImage.src = data.sprites.back_default;
-        if(!data.types[1]){
-            pokeTypeOne.innerText = capitalize(data.types[0].type.name);
-            pokeTypeTwo.innerText = null;
-            pokeTypeTwo.classList.add('hide');
-        }else{
-            pokeTypeOne.innerText = capitalize(data.types[0].type.name);
-            pokeTypeTwo.innerText = capitalize(data.types[1].type.name);
-        }
-        mainScreen.classList.add(`${data.types[0].type.name}`)
-        pokeWeight.innerText = data.weight;
-        pokeHeight.innerText = data.height;
-    });
+const handleListItemClick = (e) => {
+    if(!e.target) return;
+
+    const listItem = e.target;
+    if(!listItem.textContent) return;
+
+    const id = listItem.textContent.split('.')[0];
+    fetchPokeData(id);
+}
 
 prevButton.addEventListener('click', handlePrevButtonClick);
 nextButton.addEventListener('click', handleNextButtonClick);
 
-fetchPokeList('https://pokeapi.co/api/v2/pokemon');
+for(const pokeListItems of pokeList) {
+    pokeListItems.addEventListener('click', handleListItemClick);
+}
+
+fetchPokeList('https://pokeapi.co/api/v2/pokemon'); 
