@@ -8,7 +8,11 @@ const pokeWeight = document.querySelector('.poke-weight')
 const pokeHeight = document.querySelector('.poke-height')
 const mainScreen = document.querySelector('.main-screen')
 const pokeList = document.querySelectorAll('.list-item')
+const nextButton = document.querySelector('.right-button')
+const prevButton = document.querySelector('.left-button')
 
+let prevUrl = null;
+let nextUrl = null;
 
 function capitalize(word){
     return word.charAt(0).toUpperCase() + word.slice(1);
@@ -26,8 +30,8 @@ const resetScreen = () => {
     }
 }
 
-const fetchPokeList = () => {
-    fetch('https://pokeapi.co/api/v2/pokemon')
+const fetchPokeList = url => {
+    fetch(url)
     .then(res => res.json())
     .then(data => {
         const { results, previous, next } = data;
@@ -49,6 +53,17 @@ const fetchPokeList = () => {
     })
 }
 
+const handleNextButtonClick = () => {
+    if(nextUrl) {
+        fetchPokeList(nextUrl);
+    }
+}
+
+const handlePrevButtonClick = () => {
+    if(prevUrl){
+        fetchPokeList(prevUrl);
+    }
+}
 
 fetch('https://pokeapi.co/api/v2/pokemon/50')
     .then(res => res.json())
@@ -72,3 +87,7 @@ fetch('https://pokeapi.co/api/v2/pokemon/50')
         pokeHeight.innerText = data.height;
     });
 
+prevButton.addEventListener('click', handlePrevButtonClick);
+nextButton.addEventListener('click', handleNextButtonClick);
+
+fetchPokeList('https://pokeapi.co/api/v2/pokemon');
