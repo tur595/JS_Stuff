@@ -7,23 +7,62 @@ const pokeTypeTwo = document.querySelector('.poke-type-two')
 const pokeWeight = document.querySelector('.poke-weight')
 const pokeHeight = document.querySelector('.poke-height')
 const mainScreen = document.querySelector('.main-screen')
+const pokeList = document.querySelectorAll('.list-item')
+
 
 function capitalize(word){
     return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
-fetch('https://pokeapi.co/api/v2/pokemon/1')
+const resetScreen = () => {
+    mainScreen.classList.remove('hide');
+    const TYPES = [
+        'normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug',
+        'ghost', 'steel', 'fire', 'water', 'grass', 'electric', 'psychic',
+        'ice', 'dragon', 'dark', 'fairy'
+    ];
+    for (const type of TYPES) {
+        mainScreen.classList.remove(type);
+    }
+}
+
+const fetchPokeList = () => {
+    fetch('https://pokeapi.co/api/v2/pokemon')
+    .then(res => res.json())
+    .then(data => {
+        const { results, previous, next } = data;
+        prevUrl = previous;
+        nextUrl = next;
+        for (let i = 0; i < pokeList.length; i++){
+            const pokeListItem = pokeList[i];
+            const resultData = results[i];
+
+            if (resultData) {
+                const { name, url } = resultData;
+                const urlArray = url.split('/');
+                const id = urlArray[urlArray.length - 2];
+                pokeListItem.textContent = id + '. ' + capitalize(name);
+            }else{
+                pokeListItem.textContent = '';
+            }
+        }
+    })
+}
+
+
+fetch('https://pokeapi.co/api/v2/pokemon/50')
     .then(res => res.json())
     .then(data => {
         console.log(data);
-        mainScreen.classList.remove('hide');
+        resetScreen();
         pokeName.innerText = data.name;
-        pokeId.innerText = data.id;
+        pokeId.innerText = '#' + data.id.toString().padStart(3, '0');
         pokeFrontImage.src = data.sprites.front_default;
         pokeBackImage.src = data.sprites.back_default;
         if(!data.types[1]){
             pokeTypeOne.innerText = capitalize(data.types[0].type.name);
             pokeTypeTwo.innerText = null;
+            pokeTypeTwo.classList.add('hide');
         }else{
             pokeTypeOne.innerText = capitalize(data.types[0].type.name);
             pokeTypeTwo.innerText = capitalize(data.types[1].type.name);
@@ -32,3 +71,4 @@ fetch('https://pokeapi.co/api/v2/pokemon/1')
         pokeWeight.innerText = data.weight;
         pokeHeight.innerText = data.height;
     });
+
