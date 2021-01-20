@@ -51,8 +51,26 @@ body {
 }
 
 .game-cell {
+  background: #14bdac;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   height: 200px;
   width: 200px;
   background: #14bdac;
   cursor: pointer;
+}
+
+.used {
+  pointer-events: none;
+}
+
+.x::after {
+  content: "×";
+  font-size: 200px;
+}
+
+.o::before {
+  content: "○";
+  font-size: 225px;
 }
