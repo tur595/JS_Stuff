@@ -11,8 +11,12 @@ body {
   justify-content: center;
 }
 
+.used {
+  pointer-events: none;
+}
+
 .container {
-  background-color: #14bdac;
+  background: #14bdac;
   margin: 50px;
   padding: 50px;
   border-radius: 25px;
@@ -31,6 +35,7 @@ body {
   margin-top: 25px;
   font-size: 25px;
   justify-content: space-around;
+  height: 30px;
 }
 
 .status span {
@@ -39,10 +44,13 @@ body {
 
 .reset {
   cursor: pointer;
+  background: #f2ebd3;
+  border-radius: 5px;
 }
 
 .reset:hover {
   color: #f2ebd3;
+  background: #545454;
 }
 
 .game-grid {
@@ -57,16 +65,16 @@ body {
 .game-cell {
   background: #14bdac;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  cursor: pointer;
   height: 200px;
   width: 200px;
-  background: #14bdac;
-  cursor: pointer;
 }
 
-.used {
-  pointer-events: none;
+.x,
+.o {
+  cursor: default;
 }
 
 .x::after {
@@ -74,8 +82,52 @@ body {
   font-size: 200px;
 }
 
-.o::before {
+.o::after {
   content: "○";
-  font-size: 225px;
   color: #f2ebd3;
+  font-size: 225px;
+}
+
+.won::after {
+  color: #bd022f;
+}
+
+@media only screen and (max-width: 1024px) {
+  .game-grid {
+    margin-top: 25px;
+    grid-gap: 10px;
+  }
+
+  .game-cell {
+    height: 150px;
+    width: 150px;
+  }
+
+  .x::after {
+    font-size: 150px;
+  }
+
+  .o::after {
+    font-size: 175px;
+  }
+}
+
+@media only screen and (max-width: 540px) {
+  .container {
+    margin: 25px;
+    padding: 25px;
+  }
+
+  .game-cell {
+    height: 100px;
+    width: 100px;
+  }
+
+  .x::after {
+    font-size: 100px;
+  }
+
+  .o::after {
+    font-size: 125px;
+  }
 }
