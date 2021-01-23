@@ -19,7 +19,9 @@ const capitalize = (word) => {
     return word.charAt(0).toUpperCase() + word.slice(1)
 }
 
-fetch(pokeUrl)
+const fetchPokeData = id => {
+
+fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
     .then(data => {
         return data.json()
     })
@@ -27,13 +29,21 @@ fetch(pokeUrl)
         mainScreen.classList.remove('hide')
         pokeName.textContent = capitalize(data.name)
         pokeTypeOne.textContent = capitalize(data.types[0].type.name)
-        pokeTypeTwo.textContent = capitalize(data.types[1].type.name)
-        pokeFrontImage.src = data.sprites.front_default
-        pokeBackImage.src = data.sprites.back_default
+        if(data.types[1]){
+            pokeTypeTwo.classList.remove('hide')
+            pokeTypeTwo.textContent = capitalize(data.types[1].type.name)
+
+        }else{
+            pokeTypeTwo.classList.add('hide')
+            pokeTypeTwo.textContent = ''
+        }
+        pokeFrontImage.src = data.sprites.front_default || ""
+        pokeBackImage.src = data.sprites.back_default || ""
         pokeWeight.textContent = data.weight
         pokeHeight.textContent = data.height
-        mainScreen.classList.add(`${data.types[0].type.name}`)
+        mainScreen.classList.add(data.types[0].type.name)
     })
+}
 
 const fetchPokeList = url => {
 
@@ -68,7 +78,21 @@ const prevButtonClick = () => {
     }
 }
 
+const listItemClick = (e) => {
+    if(!e.target) return
+    const listItem = e.target
+
+    if(!listItem.textContent) return
+
+    const id = listItem.textContent.split('.')[0]
+    fetchPokeData(id)
+}
+
 nextButton.addEventListener('click', nextButtonClick)
 prevButton.addEventListener('click', prevButtonClick)
+
+for(const pokeListItem of pokeListItems){
+    pokeListItem.addEventListener('click', listItemClick)
+}
 
 fetchPokeList(listUrl)
