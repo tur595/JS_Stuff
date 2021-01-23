@@ -6,19 +6,24 @@ const pokeTypeOne = document.querySelector('.poke-type-one')
 const pokeTypeTwo = document.querySelector('.poke-type-two')
 const pokeWeight = document.querySelector('.poke-weight')
 const pokeHeight = document.querySelector('.poke-height')
+const pokeListItems = document.querySelectorAll('.list-item')
+const nextButton = document.querySelector('.right-button')
+const prevButton = document.querySelector('.left-button')
 
-const url = 'https://pokeapi.co/api/v2/pokemon/1'
+const pokeUrl = 'https://pokeapi.co/api/v2/pokemon/1'
+const listUrl = 'https://pokeapi.co/api/v2/pokemon?offset=0&limit=20'
+let nextUrl = null
+let prevUrl = null
 
 const capitalize = (word) => {
     return word.charAt(0).toUpperCase() + word.slice(1)
 }
 
-fetch(url)
+fetch(pokeUrl)
     .then(data => {
         return data.json()
     })
     .then(data => {
-        console.log(data)
         mainScreen.classList.remove('hide')
         pokeName.textContent = capitalize(data.name)
         pokeTypeOne.textContent = capitalize(data.types[0].type.name)
@@ -29,3 +34,41 @@ fetch(url)
         pokeHeight.textContent = data.height
         mainScreen.classList.add(`${data.types[0].type.name}`)
     })
+
+const fetchPokeList = url => {
+
+fetch(url)
+    .then(data => {
+        return data.json()
+    })
+    .then(data => {
+        const {results, previous, next} = data
+        nextUrl = next
+        prevUrl = previous
+        for(i = 0; i < data.results.length; i++){
+            const pokeListItem = pokeListItems[i]
+            const resultData = results[i]
+            const {url, name} = resultData
+            const urlArray = url.split('/')
+            const id = urlArray[urlArray.length - 2]
+            pokeListItem.textContent = `${id}.  ${capitalize(name)}`
+            }
+    })
+
+}
+const nextButtonClick = () => {
+    if(nextUrl){
+        fetchPokeList(nextUrl)
+    }
+}
+
+const prevButtonClick = () => {
+    if(prevUrl){
+        fetchPokeList(prevUrl)
+    }
+}
+
+nextButton.addEventListener('click', nextButtonClick)
+prevButton.addEventListener('click', prevButtonClick)
+
+fetchPokeList(listUrl)
