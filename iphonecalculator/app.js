@@ -37,6 +37,10 @@ const numberElArray = [
   number9El,
 ];
 
+//variables
+let valueStrInMemory = null;
+let operatorInMemory = null;
+
 //Funtions
 const getValueAsStr = () => valueEl.textContent.split(",").join("");
 
@@ -58,6 +62,7 @@ const setStrAsValue = (valueStr) => {
     valueEl.textContent = parseFloat(wholeNumStr).toLocaleString();
   }
 };
+
 const handleNumberClick = (numStr) => {
   const currentValueStr = getValueAsStr();
   if (currentValueStr === "0") {
@@ -65,6 +70,36 @@ const handleNumberClick = (numStr) => {
   } else {
     setStrAsValue(currentValueStr + numStr);
   }
+};
+
+const getResultOfOperationAsStr = () => {
+  const valueNumInMemory = parseFloat(valueStrInMemory);
+  const currentValueNum = getValueAsNum();
+  let newValueNum;
+  if (operatorInMemory === "addition") {
+    newValueNum = valueNumInMemory + currentValueNum;
+  } else if (operatorInMemory === "subtraction") {
+    newValueNum = valueNumInMemory - currentValueNum;
+  } else if (operatorInMemory === "multiplication") {
+    newValueNum = valueNumInMemory * currentValueNum;
+  } else if (operatorInMemory === "division") {
+    newValueNum = valueNumInMemory / currentValueNum;
+  }
+  return newValueNum.toString();
+};
+
+const handleOperatorClick = (operation) => {
+  const currentValueStr = getValueAsStr();
+  if (!valueStrInMemory) {
+    valueStrInMemory = currentValueStr;
+    operatorInMemory = operation;
+    setStrAsValue("0");
+    return;
+  }
+
+  valueNumInMemory = getResultOfOperationAsStr();
+  operatorInMemory = operation;
+  setStrAsValue("0");
 };
 
 //Event listeners
@@ -85,6 +120,8 @@ decimalEl.addEventListener("click", () => {
 
 acEl.addEventListener("click", () => {
   setStrAsValue("0");
+  operatorInMemory = null;
+  valueStrInMemory = null;
 });
 
 pmEl.addEventListener("click", () => {
@@ -107,6 +144,33 @@ percentEl.addEventListener("click", () => {
   const currentValueNum = getValueAsNum();
   const newValueNum = currentValueNum / 100;
   setStrAsValue(newValueNum.toString());
+  valueStrInMemory = null;
+  operatorInMemory = null;
+});
+
+additionEl.addEventListener("click", () => {
+  handleOperatorClick("addition");
+});
+
+subtractionEl.addEventListener("click", () => {
+  handleOperatorClick("subtraction");
+});
+
+multiplicationEl.addEventListener("click", () => {
+  handleOperatorClick("multiplication");
+});
+
+divisionEl.addEventListener("click", () => {
+  handleOperatorClick("division");
+});
+
+equalEl.addEventListener("click", () => {
+  //handleOperatorClick("equal");
+  if (valueStrInMemory) {
+    setStrAsValue(getResultOfOperationAsStr());
+    valueStrInMemory = null;
+    operatorInMemory = null;
+  }
 });
 
 //Set up the time
