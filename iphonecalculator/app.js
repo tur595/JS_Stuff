@@ -83,6 +83,32 @@ decimalEl.addEventListener("click", () => {
   }
 });
 
+acEl.addEventListener("click", () => {
+  setStrAsValue("0");
+});
+
+pmEl.addEventListener("click", () => {
+  const currentValueNum = getValueAsNum();
+  const currentValueStr = getValueAsStr();
+
+  if (currentValueStr === "-0") {
+    setStrAsValue("0");
+    return;
+  }
+
+  if (currentValueNum >= 0) {
+    setStrAsValue("-" + currentValueStr);
+  } else {
+    setStrAsValue(currentValueStr.substring(1));
+  }
+});
+
+percentEl.addEventListener("click", () => {
+  const currentValueNum = getValueAsNum();
+  const newValueNum = currentValueNum / 100;
+  setStrAsValue(newValueNum.toString());
+});
+
 //Set up the time
 const updateTime = () => {
   const currentTime = new Date();
